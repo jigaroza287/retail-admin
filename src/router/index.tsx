@@ -3,6 +3,7 @@ import { ProtectedRoute } from "../auth/ProtectedRoute";
 import { AppLayout } from "../components/Layout/AppLayout";
 import DashboardPage from "../pages/Dashboard/DashboardPage";
 import LoginPage from "../pages/Login/LoginPage";
+import OrderList from "../pages/Orders/OrderList";
 import ProductForm from "../pages/Products/ProductForm";
 import ProductList from "../pages/Products/ProductList";
 
@@ -15,6 +16,10 @@ export const router = createBrowserRouter([
   {
     path: "/products/edit/:id",
     element: <ProductForm mode="edit" />,
+  },
+  {
+    path: "/orders",
+    element: <OrderList />,
   },
   {
     element: <ProtectedRoute />,
