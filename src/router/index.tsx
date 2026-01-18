@@ -6,6 +6,7 @@ import LoginPage from "../pages/Login/LoginPage";
 import OrderList from "../pages/Orders/OrderList";
 import ProductForm from "../pages/Products/ProductForm";
 import ProductList from "../pages/Products/ProductList";
+import UserList from "../pages/Users/UserList";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
   {
     path: "/orders",
     element: <OrderList />,
+  },
+  {
+    path: "/users",
+    element: <UserList />,
   },
   {
     element: <ProtectedRoute />,
