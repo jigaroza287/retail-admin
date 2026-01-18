@@ -1,24 +1,24 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import {
   Box,
-  CircularProgress,
+  Button,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   Typography,
-  Button,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { FilterBar } from "../../components/Table/FilterBar";
+import { PaginationControl } from "../../components/Table/PaginationControl";
+import { SearchBar } from "../../components/Table/SearchBar";
 import type { Product } from "../../types/product";
 import { fetchProducts } from "./Product.api";
-import { SearchBar } from "../../components/Table/SearchBar";
-import { PaginationControl } from "../../components/Table/PaginationControl";
-import { FilterBar } from "../../components/Table/FilterBar";
 
 export default function ProductList() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function ProductList() {
       <Paper sx={{ padding: 2 }}>
         {isLoading ? (
           <Box sx={{ textAlign: "center", p: 4 }}>
-            <CircularProgress />
+            <Skeleton variant="rounded" height={240} />
           </Box>
         ) : (
           <>

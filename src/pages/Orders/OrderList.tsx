@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import {
   Box,
-  CircularProgress,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -11,6 +9,8 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 import { Order } from "../../types/order";
 import { fetchOrders, OrderFilters } from "./Order.api";
@@ -35,7 +35,7 @@ export default function OrderList() {
       <Paper sx={{ p: 2 }}>
         {isLoading ? (
           <Box sx={{ textAlign: "center", p: 4 }}>
-            <CircularProgress />
+            <Skeleton variant="rounded" height={240} />
           </Box>
         ) : (
           <Table>

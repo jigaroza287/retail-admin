@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Box,
-  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
+  Skeleton,
   Switch,
   Table,
   TableBody,
@@ -11,11 +13,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
 } from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 import type { User } from "../../types/user";
 import type { UserFilters } from "./User.api";
@@ -96,7 +96,7 @@ export default function UserList() {
       <Paper sx={{ p: 2 }}>
         {isLoading ? (
           <Box sx={{ textAlign: "center", p: 4 }}>
-            <CircularProgress />
+            <Skeleton variant="rounded" height={240} />
           </Box>
         ) : (
           <Table>
