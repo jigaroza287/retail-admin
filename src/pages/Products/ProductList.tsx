@@ -1,5 +1,7 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
-  Button,
+  Box,
   CircularProgress,
   Paper,
   Table,
@@ -7,46 +9,86 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useProducts } from "../../hooks/useProducts";
+
+import type { Product } from "../../types/product";
+import { fetchProducts } from "./Product.api";
+import { SearchBar } from "../../components/Table/SearchBar";
+import { PaginationControl } from "../../components/Table/PaginationControl";
+import { FilterBar } from "../../components/Table/FilterBar";
 
 export default function ProductList() {
-  const { data, isLoading, error } = useProducts();
   const navigate = useNavigate();
 
-  if (isLoading) return <CircularProgress />;
-  if (error) return <div>Error: {error.message}</div>;
+  // State for search + pagination
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["products", { search, page, limit }],
+    queryFn: () => fetchProducts({ search, page, limit }),
+  });
 
   return (
-    <Paper sx={{ padding: 2 }}>
-      <h2>Products</h2>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Stock</TableCell>
-          </TableRow>
-        </TableHead>
+    <Box>
+      <Typography variant="h5" mb={3}>
+        Products
+      </Typography>
 
-        <TableBody>
-          {data?.map((p) => (
-            <TableRow key={p.id}>
-              <TableCell>{p.name}</TableCell>
-              <TableCell>{p.price}</TableCell>
-              <TableCell>{p.inStock ? "Yes" : "No"}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Button
-        variant="contained"
-        sx={{ mb: 2 }}
-        onClick={() => navigate("/products/add")}
-      >
-        Add Product
-      </Button>
-    </Paper>
+      {/* Search + Add Button */}
+      <FilterBar>
+        <SearchBar value={search} onChange={setSearch} />
+        <Button variant="contained" onClick={() => navigate("/products/add")}>
+          Add Product
+        </Button>
+      </FilterBar>
+
+      <Paper sx={{ padding: 2 }}>
+        {isLoading ? (
+          <Box sx={{ textAlign: "center", p: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Stock</TableCell>
+                  <TableCell>Description</TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {data?.data.map((p: Product) => (
+                  <TableRow key={p.id}>
+                    <TableCell>{p.name}</TableCell>
+                    <TableCell>₹{p.price}</TableCell>
+                    <TableCell>{p.inStock ? "Yes" : "No"}</TableCell>
+                    <TableCell>{p.description ?? "-"}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            {/* Pagination */}
+            <PaginationControl
+              total={data?.total ?? 0}
+              page={page}
+              limit={limit}
+              onChange={(newPage, newLimit) => {
+                setPage(newPage);
+                setLimit(newLimit);
+              }}
+            />
+          </>
+        )}
+      </Paper>
+    </Box>
   );
 }
