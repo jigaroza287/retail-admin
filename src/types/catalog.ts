@@ -20,3 +20,11 @@ export interface ProductVariant {
   sku: string;
   createdAt: string;
 }
+
+export interface ProductListItem {
+  id: string;
+  name: string;
+  categoryName: string;
+  variantCount: number;
+  createdAt: string;
+}

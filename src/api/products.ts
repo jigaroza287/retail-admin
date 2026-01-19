@@ -1,31 +1,42 @@
+import type { Product, ProductListItem } from "../types/catalog";
 import { api } from "./axios";
-import type { Product } from "../types/product";
-import type { PaginatedResult } from "../utils/types";
 
 export interface FetchProductsParams {
-  search: string;
+  search?: string;
+  page: number;
+  limit: number;
+}
+
+export interface PaginatedProducts {
+  data: ProductListItem[];
+  total: number;
   page: number;
   limit: number;
 }
 
 export async function fetchProducts(
   params: FetchProductsParams,
-): Promise<PaginatedResult<Product>> {
-  const res = await api.get("/products", { params });
-  return res.data;
+): Promise<PaginatedProducts> {
+  const res = await api.get("/admin/products", { params });
+  return res.data.data;
 }
 
-export async function createProduct(data: Omit<Product, "id">) {
-  const res = await api.post("/products", data);
-  return res.data;
+export async function createProduct(payload: {
+  name: string;
+  categoryId: string;
+}): Promise<Product> {
+  const res = await api.post("/admin/products", payload);
+  return res.data.data;
 }
 
-export async function updateProduct(id: string, data: Partial<Product>) {
-  const res = await api.put(`/products/${id}`, data);
-  return res.data;
+export async function updateProduct(
+  id: string,
+  payload: { name: string; categoryId: string },
+): Promise<Product> {
+  const res = await api.put(`/admin/products/${id}`, payload);
+  return res.data.data;
 }
 
-export async function deleteProduct(id: string) {
-  const res = await api.delete(`/products/${id}`);
-  return res.data;
+export async function deleteProduct(id: string): Promise<void> {
+  await api.delete(`/admin/products/${id}`);
 }

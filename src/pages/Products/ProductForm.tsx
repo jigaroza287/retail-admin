@@ -1,104 +1,79 @@
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
+  MenuItem,
   Paper,
   TextField,
   Typography,
-  Switch,
-  FormControlLabel,
 } from "@mui/material";
-
-import { productSchema, ProductFormData } from "./Product.schema";
-import { createProduct, updateProduct } from "./Product.api";
 import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-interface ProductFormProps {
-  mode: "add" | "edit";
-  defaultValues?: ProductFormData;
-  productId?: string;
+import { fetchCategories } from "../../api/categories";
+import { createProduct } from "../../api/products";
+
+interface FormData {
+  name: string;
+  categoryId: string;
 }
 
-export default function ProductForm({
-  mode,
-  defaultValues,
-  productId,
-}: ProductFormProps) {
+export default function ProductForm() {
   const navigate = useNavigate();
+  const qc = useQueryClient();
 
-  const form = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
-    defaultValues: defaultValues ?? {
-      name: "",
-      price: 0,
-      inStock: true,
-      description: "",
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
+
+  const mutation = useMutation({
+    mutationFn: createProduct,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["products"] });
+      navigate("/products");
     },
   });
 
-  const { register, handleSubmit, formState } = form;
-  const { errors, isSubmitting } = formState;
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: "",
+      categoryId: "",
+    },
+  });
 
-  const onSubmit = async (data: ProductFormData): Promise<void> => {
-    if (mode === "add") {
-      await createProduct(data);
-    } else {
-      if (!productId) return;
-      await updateProduct(productId, data);
-    }
-
-    navigate("/products");
-  };
+  const onSubmit = (data: FormData) => mutation.mutate(data);
 
   return (
-    <Paper sx={{ padding: 3, maxWidth: 500 }}>
+    <Paper sx={{ p: 3, maxWidth: 480 }}>
       <Typography variant="h6" mb={2}>
-        {mode === "add" ? "Add Product" : "Edit Product"}
+        Add Product
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="Product Name"
           fullWidth
+          {...register("name", { required: true })}
           margin="normal"
-          {...register("name")}
-          error={Boolean(errors.name)}
-          helperText={errors.name?.message}
         />
 
         <TextField
-          label="Price"
-          type="number"
+          select
           fullWidth
+          label="Category"
+          {...register("categoryId", { required: true })}
           margin="normal"
-          {...register("price", { valueAsNumber: true })}
-          error={Boolean(errors.price)}
-          helperText={errors.price?.message}
-        />
-
-        <FormControlLabel
-          control={<Switch {...register("inStock")} defaultChecked />}
-          label="In Stock"
-        />
-
-        <TextField
-          label="Description"
-          fullWidth
-          multiline
-          rows={3}
-          margin="normal"
-          {...register("description")}
-        />
-
-        <Button
-          variant="contained"
-          fullWidth
-          type="submit"
-          disabled={isSubmitting}
-          sx={{ mt: 2 }}
         >
-          {mode === "add" ? "Create" : "Update"}
+          {categories?.map((c) => (
+            <MenuItem key={c.id} value={c.id}>
+              {c.name}
+            </MenuItem>
+          ))}
+        </TextField>
+
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
+          Save
         </Button>
       </Box>
     </Paper>

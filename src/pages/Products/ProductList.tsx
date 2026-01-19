@@ -1,8 +1,9 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
+  IconButton,
   Paper,
-  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -10,27 +11,37 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
+import {
+  deleteProduct,
+  fetchProducts,
+  PaginatedProducts,
+} from "../../api/products";
+import type { ProductListItem } from "../../types/catalog";
+
+import { useNavigate } from "react-router-dom";
 import { FilterBar } from "../../components/Table/FilterBar";
 import { PaginationControl } from "../../components/Table/PaginationControl";
 import { SearchBar } from "../../components/Table/SearchBar";
-import type { Product } from "../../types/product";
-import { fetchProducts } from "./Product.api";
 
 export default function ProductList() {
   const navigate = useNavigate();
+  const qc = useQueryClient();
 
-  // State for search + pagination
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useQuery<PaginatedProducts>({
     queryKey: ["products", { search, page, limit }],
     queryFn: () => fetchProducts({ search, page, limit }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteProduct,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["products"] }),
   });
 
   return (
@@ -39,7 +50,6 @@ export default function ProductList() {
         Products
       </Typography>
 
-      {/* Search + Add Button */}
       <FilterBar>
         <SearchBar value={search} onChange={setSearch} />
         <Button variant="contained" onClick={() => navigate("/products/add")}>
@@ -47,43 +57,51 @@ export default function ProductList() {
         </Button>
       </FilterBar>
 
-      <Paper sx={{ padding: 2 }}>
+      <Paper>
         {isLoading ? (
-          <Box sx={{ textAlign: "center", p: 4 }}>
-            <Skeleton variant="rounded" height={240} />
-          </Box>
+          <Box sx={{ p: 4, textAlign: "center" }}>Loading...</Box>
         ) : (
           <>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Stock</TableCell>
-                  <TableCell>Description</TableCell>
+                  <TableCell>Category</TableCell>
+                  <TableCell>Variants</TableCell>
+                  <TableCell>Created</TableCell>
+                  <TableCell width={80}></TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
-                {data?.data.map((p: Product) => (
+                {data?.data.map((p: ProductListItem) => (
                   <TableRow key={p.id}>
                     <TableCell>{p.name}</TableCell>
-                    <TableCell>₹{p.price}</TableCell>
-                    <TableCell>{p.inStock ? "Yes" : "No"}</TableCell>
-                    <TableCell>{p.description ?? "-"}</TableCell>
+                    <TableCell>{p.categoryName}</TableCell>
+                    <TableCell>{p.variantCount}</TableCell>
+                    <TableCell>
+                      {new Date(p.createdAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      <IconButton
+                        onClick={() => deleteMutation.mutate(p.id)}
+                        color="error"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
 
-            {/* Pagination */}
             <PaginationControl
               total={data?.total ?? 0}
               page={page}
               limit={limit}
-              onChange={(newPage, newLimit) => {
-                setPage(newPage);
-                setLimit(newLimit);
+              onChange={(p, l) => {
+                setPage(p);
+                setLimit(l);
               }}
             />
           </>
