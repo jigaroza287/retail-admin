@@ -1,58 +1,63 @@
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import type { OrderFilters } from "./Order.api";
+import { Box, MenuItem, TextField } from "@mui/material";
+import type { OrderStatus } from "../../types/order";
 
-interface Props {
-  filters: OrderFilters;
-  onChange: (filters: OrderFilters) => void;
+export interface OrderFilterState {
+  search: string;
+  status?: OrderStatus;
+  fromDate?: string;
+  toDate?: string;
 }
 
-export function OrderFilters({ filters, onChange }: Props) {
-  return (
-    <Box sx={{ display: "flex", gap: 2, mb: 3, flexWrap: "wrap" }}>
-      {/* Status filter */}
-      <FormControl sx={{ minWidth: 180 }}>
-        <InputLabel>Status</InputLabel>
-        <Select
-          label="Status"
-          value={filters.status ?? ""}
-          onChange={(e) =>
-            onChange({
-              ...filters,
-              status: e.target.value as OrderFilters["status"],
-            })
-          }
-        >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="pending">Pending</MenuItem>
-          <MenuItem value="shipped">Shipped</MenuItem>
-          <MenuItem value="delivered">Delivered</MenuItem>
-          <MenuItem value="cancelled">Cancelled</MenuItem>
-        </Select>
-      </FormControl>
+interface Props {
+  value: OrderFilterState;
+  onChange: (value: OrderFilterState) => void;
+}
 
-      {/* Date from */}
+export function OrderFilters({ value, onChange }: Props) {
+  return (
+    <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+      <TextField
+        label="Search"
+        value={value.search}
+        onChange={(e) => onChange({ ...value, search: e.target.value })}
+      />
+
+      <TextField
+        select
+        label="Status"
+        value={value.status ?? ""}
+        onChange={(e) =>
+          onChange({
+            ...value,
+            status: e.target.value
+              ? (e.target.value as OrderStatus)
+              : undefined,
+          })
+        }
+        sx={{ minWidth: 160 }}
+      >
+        <MenuItem value="">All</MenuItem>
+        <MenuItem value="pending">Pending</MenuItem>
+        <MenuItem value="confirmed">Confirmed</MenuItem>
+        <MenuItem value="shipped">Shipped</MenuItem>
+        <MenuItem value="delivered">Delivered</MenuItem>
+        <MenuItem value="cancelled">Cancelled</MenuItem>
+      </TextField>
+
       <TextField
         type="date"
         label="From"
         InputLabelProps={{ shrink: true }}
-        value={filters.fromDate ?? ""}
-        onChange={(e) => onChange({ ...filters, fromDate: e.target.value })}
+        value={value.fromDate ?? ""}
+        onChange={(e) => onChange({ ...value, fromDate: e.target.value })}
       />
 
-      {/* Date to */}
       <TextField
         type="date"
         label="To"
         InputLabelProps={{ shrink: true }}
-        value={filters.toDate ?? ""}
-        onChange={(e) => onChange({ ...filters, toDate: e.target.value })}
+        value={value.toDate ?? ""}
+        onChange={(e) => onChange({ ...value, toDate: e.target.value })}
       />
     </Box>
   );
