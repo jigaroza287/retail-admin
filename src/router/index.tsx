@@ -6,8 +6,10 @@ import CategoryList from "../pages/Categories/CategoryList";
 import DashboardPage from "../pages/Dashboard/DashboardPage";
 import LoginPage from "../pages/Login/LoginPage";
 import OrderList from "../pages/Orders/OrderList";
+import ProductDetailPage from "../pages/Products/ProductDetailPage";
 import ProductForm from "../pages/Products/ProductForm";
 import ProductList from "../pages/Products/ProductList";
+import VariantForm from "../pages/Products/VariantForm";
 import UserList from "../pages/Users/UserList";
 
 export const router = createBrowserRouter([
@@ -38,11 +40,19 @@ export const router = createBrowserRouter([
           },
           {
             path: "/products/add",
-            element: <ProductForm mode="add" />,
+            element: <ProductForm />,
           },
           {
-            path: "/products/edit/:id",
-            element: <ProductForm mode="edit" />,
+            path: "/products/:id",
+            element: <ProductDetailPage />,
+          },
+          {
+            path: "/products/:id/variants/add",
+            element: <VariantForm />,
+          },
+          {
+            path: "/variants/:variantId/edit",
+            element: <VariantForm />,
           },
         ],
       },

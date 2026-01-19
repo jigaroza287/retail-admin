@@ -15,8 +15,8 @@ export interface Product {
 export interface ProductVariant {
   id: string;
   productId: string;
-  size?: string | null;
-  color?: string | null;
+  size: string | null;
+  color: string | null;
   sku: string;
   createdAt: string;
 }
@@ -27,4 +27,10 @@ export interface ProductListItem {
   categoryName: string;
   variantCount: number;
   createdAt: string;
+}
+
+export interface ProductDetailResponse {
+  product: Product;
+  variants: ProductVariant[];
+  categoryName: string;
 }
