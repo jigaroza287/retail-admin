@@ -1,10 +1,4 @@
-import {
-  Drawer,
-  List,
-  ListItemButton,
-  ListItemText,
-  ListSubheader,
-} from "@mui/material";
+import { Drawer, List, ListItemButton, ListItemText } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
@@ -25,7 +19,6 @@ export function Sidebar() {
         <ListItemButton component={NavLink} to="/">
           <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListSubheader>Catalog</ListSubheader>
         <ListItemButton component={NavLink} to="/categories">
           <ListItemText primary="Categories" />
         </ListItemButton>
