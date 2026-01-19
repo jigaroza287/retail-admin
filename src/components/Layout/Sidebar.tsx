@@ -6,10 +6,13 @@ import {
   ListSubheader,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
 
 const drawerWidth = 240;
 
 export function Sidebar() {
+  const { user } = useAuth();
+
   return (
     <Drawer
       variant="permanent"
@@ -32,9 +35,11 @@ export function Sidebar() {
         <ListItemButton component={NavLink} to="/orders">
           <ListItemText primary="Orders" />
         </ListItemButton>
-        <ListItemButton component={NavLink} to="/users">
-          <ListItemText primary="Users" />
-        </ListItemButton>
+        {user?.role === "admin" && (
+          <ListItemButton component={NavLink} to="/users">
+            <ListItemText primary="Users" />
+          </ListItemButton>
+        )}{" "}
       </List>
     </Drawer>
   );

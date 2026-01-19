@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "manager" | "viewer";
+import { UserRole } from "../types/user";
 
 export interface AuthUser {
   id: string;
