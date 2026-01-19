@@ -12,8 +12,9 @@ export interface AuthState {
   token: string | null;
 }
 
-export interface AuthContextValue extends AuthState {
+export interface AuthContextValue {
+  user: AuthUser | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  isAuthenticated: boolean;
+  loading: boolean;
 }
