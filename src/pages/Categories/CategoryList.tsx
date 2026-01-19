@@ -62,7 +62,14 @@ export default function CategoryList() {
             {data?.map((cat) => (
               <TableRow key={cat.id}>
                 <TableCell>{cat.name}</TableCell>
-                <TableCell>{cat.parentId ?? "-"}</TableCell>
+                <TableCell>
+                  <Button
+                    size="small"
+                    onClick={() => navigate(`/products?category=${cat.id}`)}
+                  >
+                    View Products
+                  </Button>
+                </TableCell>
                 <TableCell>
                   {new Date(cat.createdAt).toLocaleDateString()}
                 </TableCell>

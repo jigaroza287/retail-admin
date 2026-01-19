@@ -16,12 +16,9 @@ interface FormData {
 }
 
 export default function VariantForm() {
-  const params = useParams();
+  const { productId, variantId } = useParams();
   const navigate = useNavigate();
   const qc = useQueryClient();
-
-  const productId = params.id; // for add
-  const variantId = params.variantId; // for edit
 
   const isEdit = Boolean(variantId);
 
@@ -94,6 +91,9 @@ export default function VariantForm() {
 
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           Save
+        </Button>
+        <Button fullWidth sx={{ mt: 1 }} onClick={() => navigate(-1)}>
+          Cancel
         </Button>
       </Box>
     </Paper>

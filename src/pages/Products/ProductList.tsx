@@ -1,4 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   Box,
   Button,
@@ -83,9 +84,13 @@ export default function ProductList() {
                       {new Date(p.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
+                      <IconButton onClick={() => navigate(`/products/${p.id}`)}>
+                        <VisibilityIcon />
+                      </IconButton>
+
                       <IconButton
-                        onClick={() => deleteMutation.mutate(p.id)}
                         color="error"
+                        onClick={() => deleteMutation.mutate(p.id)}
                       >
                         <DeleteIcon />
                       </IconButton>

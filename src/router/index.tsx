@@ -43,15 +43,15 @@ export const router = createBrowserRouter([
             element: <ProductForm />,
           },
           {
-            path: "/products/:id",
+            path: "/products/:productId",
             element: <ProductDetailPage />,
           },
           {
-            path: "/products/:id/variants/add",
+            path: "/products/:productId/variants/add",
             element: <VariantForm />,
           },
           {
-            path: "/variants/:variantId/edit",
+            path: "/products/:productId/variants/:variantId/edit",
             element: <VariantForm />,
           },
         ],

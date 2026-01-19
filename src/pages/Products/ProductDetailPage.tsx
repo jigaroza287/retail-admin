@@ -1,21 +1,22 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
+  Breadcrumbs,
   Button,
-  Paper,
-  Typography,
-  Table,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
   IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-import { fetchProductDetail, deleteVariant } from "../../api/productDetails";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { deleteVariant, fetchProductDetail } from "../../api/productDetails";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -46,6 +47,15 @@ export default function ProductDetailPage() {
 
   return (
     <Box>
+      <Typography variant="body2" sx={{ opacity: 0.7 }}>
+        {variants.length} variant(s)
+      </Typography>
+
+      <Breadcrumbs sx={{ mb: 2 }}>
+        <Link to="/products">Products</Link>
+        <Typography>{product.name}</Typography>
+      </Breadcrumbs>
+
       <Typography variant="h5" mb={2}>
         {product.name}
       </Typography>
@@ -53,6 +63,14 @@ export default function ProductDetailPage() {
       <Typography variant="body1" mb={4}>
         Category: <strong>{categoryName}</strong>
       </Typography>
+
+      <Button
+        variant="outlined"
+        sx={{ ml: 2 }}
+        onClick={() => navigate(`/products/edit/${product.id}`)}
+      >
+        Edit Product
+      </Button>
 
       <Button
         variant="contained"
@@ -78,6 +96,11 @@ export default function ProductDetailPage() {
             {variants.map((v) => (
               <TableRow key={v.id}>
                 <TableCell>{v.sku}</TableCell>
+                <IconButton
+                  onClick={() => navigator.clipboard.writeText(v.sku)}
+                >
+                  <ContentCopyIcon />
+                </IconButton>
                 <TableCell>{v.size ?? "-"}</TableCell>
                 <TableCell>{v.color ?? "-"}</TableCell>
                 <TableCell>
@@ -101,6 +124,9 @@ export default function ProductDetailPage() {
           </TableBody>
         </Table>
       </Paper>
+      <Button onClick={() => navigate("/products")} sx={{ mb: 2 }}>
+        ← Back to Products
+      </Button>
     </Box>
   );
 }

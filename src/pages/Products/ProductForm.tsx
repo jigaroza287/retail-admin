@@ -45,37 +45,42 @@ export default function ProductForm() {
   const onSubmit = (data: FormData) => mutation.mutate(data);
 
   return (
-    <Paper sx={{ p: 3, maxWidth: 480 }}>
-      <Typography variant="h6" mb={2}>
-        Add Product
-      </Typography>
+    <>
+      <Button onClick={() => navigate("/products")} sx={{ mb: 2 }}>
+        ← Back to Products
+      </Button>
+      <Paper sx={{ p: 3, maxWidth: 480 }}>
+        <Typography variant="h6" mb={2}>
+          Add Product
+        </Typography>
 
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          label="Product Name"
-          fullWidth
-          {...register("name", { required: true })}
-          margin="normal"
-        />
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <TextField
+            label="Product Name"
+            fullWidth
+            {...register("name", { required: true })}
+            margin="normal"
+          />
 
-        <TextField
-          select
-          fullWidth
-          label="Category"
-          {...register("categoryId", { required: true })}
-          margin="normal"
-        >
-          {categories?.map((c) => (
-            <MenuItem key={c.id} value={c.id}>
-              {c.name}
-            </MenuItem>
-          ))}
-        </TextField>
+          <TextField
+            select
+            fullWidth
+            label="Category"
+            {...register("categoryId", { required: true })}
+            margin="normal"
+          >
+            {categories?.map((c) => (
+              <MenuItem key={c.id} value={c.id}>
+                {c.name}
+              </MenuItem>
+            ))}
+          </TextField>
 
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
-          Save
-        </Button>
-      </Box>
-    </Paper>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
+            Save
+          </Button>
+        </Box>
+      </Paper>
+    </>
   );
 }
