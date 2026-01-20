@@ -1,26 +1,36 @@
 import {
   createContext,
+  ReactNode,
   useContext,
   useEffect,
   useState,
-  ReactNode,
 } from "react";
-import type { AuthContextValue, AuthUser } from "./auth.types";
 import { fetchMe, login as loginApi, logout as logoutApi } from "../api/auth";
+import type { AuthContextValue, AuthUser } from "./auth.types";
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const hasToken = Boolean(localStorage.getItem("token"));
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(hasToken);
 
   // Bootstrap auth on app load
   useEffect(() => {
+    if (!hasToken) {
+      return;
+    }
+
     fetchMe()
       .then(setUser)
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
-  }, []);
+      .catch(() => {
+        localStorage.removeItem("token");
+        setUser(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [hasToken]);
 
   const login = async (email: string, password: string) => {
     const user = await loginApi(email, password);

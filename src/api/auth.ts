@@ -6,12 +6,13 @@ export async function login(
   password: string,
 ): Promise<AuthUser> {
   const res = await api.post("/admin/auth/login", { email, password });
-  return res.data.data.user;
+  localStorage.setItem("token", res.data.token);
+  return res.data.user;
 }
 
 export async function fetchMe(): Promise<AuthUser> {
   const res = await api.get("/admin/auth/me");
-  return res.data.data;
+  return res.data;
 }
 
 export async function logout(): Promise<void> {
