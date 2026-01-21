@@ -21,7 +21,7 @@ export async function fetchOrders(
   params: FetchOrdersParams,
 ): Promise<PaginatedOrders> {
   const res = await api.get("/admin/orders", { params });
-  return res.data.data;
+  return res.data;
 }
 
 export async function updateOrderStatus(
