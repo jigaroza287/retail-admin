@@ -20,7 +20,7 @@ export async function fetchUsers(
   params: FetchUsersParams,
 ): Promise<PaginatedUsers> {
   const res = await api.get("/admin/users", { params });
-  return res.data.data;
+  return res.data;
 }
 
 export async function updateUserRole(

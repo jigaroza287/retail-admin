@@ -28,7 +28,7 @@ export function Sidebar() {
         <ListItemButton component={NavLink} to="/orders">
           <ListItemText primary="Orders" />
         </ListItemButton>
-        {user?.role === "admin" && (
+        {user?.role?.toLowerCase() === "admin" && (
           <ListItemButton component={NavLink} to="/users">
             <ListItemText primary="Users" />
           </ListItemButton>
