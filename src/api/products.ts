@@ -18,7 +18,7 @@ export async function fetchProducts(
   params: FetchProductsParams,
 ): Promise<PaginatedProducts> {
   const res = await api.get("/admin/products", { params });
-  return res.data.data;
+  return res.data;
 }
 
 export async function createProduct(payload: {
