@@ -16,7 +16,7 @@ export function Sidebar() {
       }}
     >
       <List>
-        <ListItemButton component={NavLink} to="/">
+        <ListItemButton component={NavLink} to="/dashboard">
           <ListItemText primary="Dashboard" />
         </ListItemButton>
         <ListItemButton component={NavLink} to="/categories">
