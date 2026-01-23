@@ -12,7 +12,7 @@ export function Navbar() {
     <AppBar position="static">
       <Toolbar>
         <Typography sx={{ flexGrow: 1 }} variant="h6">
-          Retail Admin
+          Khushi Imitation Jewelry
         </Typography>
 
         <Typography sx={{ mr: 2 }}>{user?.name}</Typography>
