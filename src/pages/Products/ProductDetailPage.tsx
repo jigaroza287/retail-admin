@@ -19,19 +19,19 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { deleteVariant, fetchProductDetail } from "../../api/productDetails";
 
 export default function ProductDetailPage() {
-  const { id } = useParams();
+  const { productId } = useParams();
   const navigate = useNavigate();
   const qc = useQueryClient();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => fetchProductDetail(id!),
+    queryKey: ["product", productId],
+    queryFn: () => fetchProductDetail(productId!),
   });
 
   const deleteMutation = useMutation({
     mutationFn: deleteVariant,
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["product", id] });
+      qc.invalidateQueries({ queryKey: ["product", productId] });
     },
   });
 
