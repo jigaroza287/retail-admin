@@ -1,23 +1,23 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Box,
   MenuItem,
   Paper,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
   TextField,
   Typography,
 } from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
-import { fetchUsers, updateUserRole, updateUserActive } from "../../api/users";
+import { fetchUsers, updateUserActive, updateUserRole } from "../../api/users";
 import type { User, UserRole } from "../../types/user";
 
-import { PaginationControl } from "../../components/Table/PaginationControl";
 import { FilterBar } from "../../components/Table/FilterBar";
+import { PaginationControl } from "../../components/Table/PaginationControl";
 import { UserFilters, UserFilterState } from "./UserFilters";
 
 export default function UserList() {
