@@ -1,4 +1,4 @@
-import { Box, TextField, MenuItem } from "@mui/material";
+import { Box, MenuItem, TextField } from "@mui/material";
 import type { UserRole } from "../../types/user";
 
 export interface UserFilterState {

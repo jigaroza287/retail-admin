@@ -1,12 +1,12 @@
-import { useForm } from "react-hook-form";
-import { useParams, useNavigate } from "react-router-dom";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
   createVariant,
-  updateVariant,
   fetchProductDetail,
+  updateVariant,
 } from "../../api/productDetails";
 
 interface FormData {

@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
@@ -11,11 +11,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import type { Category } from "../../types/catalog";
-import { fetchCategories, deleteCategory } from "../../api/categories";
 import { useNavigate } from "react-router-dom";
+import { deleteCategory, fetchCategories } from "../../api/categories";
+import type { Category } from "../../types/catalog";
 
 export default function CategoryList() {
   const navigate = useNavigate();

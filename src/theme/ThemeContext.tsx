@@ -1,5 +1,5 @@
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { ThemeProvider, CssBaseline } from "@mui/material";
 import { getTheme } from "./theme";
 
 type ThemeMode = "light" | "dark";

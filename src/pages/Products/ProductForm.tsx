@@ -1,4 +1,3 @@
-import { useForm } from "react-hook-form";
 import {
   Box,
   Button,
@@ -7,8 +6,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { fetchCategories } from "../../api/categories";
 import { createProduct } from "../../api/products";

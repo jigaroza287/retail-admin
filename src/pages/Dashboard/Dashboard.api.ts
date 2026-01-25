@@ -1,7 +1,7 @@
 import {
   DashboardKPIs,
-  SalesChartPoint,
   OrdersChartPoint,
+  SalesChartPoint,
 } from "./Dashboard.types";
 
 export async function fetchDashboardKPIs(): Promise<DashboardKPIs> {
