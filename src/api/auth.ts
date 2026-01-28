@@ -1,5 +1,5 @@
-import { api } from "./axios";
 import type { AuthUser } from "../auth/auth.types";
+import { api } from "./axios";
 
 export async function login(
   email: string,
