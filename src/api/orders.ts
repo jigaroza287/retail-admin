@@ -1,5 +1,5 @@
-import { api } from "./axios";
 import type { Order, OrderStatus } from "../types/order";
+import { api } from "./axios";
 
 export interface FetchOrdersParams {
   page: number;

@@ -1,5 +1,5 @@
-import { api } from "./axios";
 import type { Category } from "../types/catalog";
+import { api } from "./axios";
 
 export async function fetchCategories(): Promise<Category[]> {
   const res = await api.get("/admin/categories");

@@ -1,9 +1,9 @@
-import { api } from "./axios";
 import type {
   DashboardKPIs,
-  SalesChartResponse,
   OrdersChartResponse,
+  SalesChartResponse,
 } from "../types/dashboard";
+import { api } from "./axios";
 
 export async function fetchDashboardKPIs(): Promise<DashboardKPIs> {
   const res = await api.get("/admin/dashboard/kpis");
