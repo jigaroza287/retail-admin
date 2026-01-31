@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import { Sidebar } from "./Sidebar";
 import { Navbar } from "./Navbar";
+import { Sidebar } from "./Sidebar";
 
 export function AppLayout() {
   return (
